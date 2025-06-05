@@ -1,4 +1,4 @@
--- NOTE: Plugins can specify dependencies.
+-- NOTE: Plugins can specify
 --
 -- The dependencies are proper plugin specifications as well - anything
 -- you do for a plugin at the top level, you can do for a dependency.
@@ -54,12 +54,18 @@ return {
       require('telescope').setup {
         -- You can put your default mappings / updates / etc. in here
         --  All the info you're looking for is in `:help telescope.setup()`
-        --
-        -- defaults = {
-        --   mappings = {
-        --     i = { ['<c-enter>'] = 'to_fuzzy_refine' },
-        --   },
-        -- },
+        defaults = {
+          mappings = {
+            i = {
+              ['<C-BS>'] = function()
+                -- Expand "<C-W>" into the actual byte sequence
+                local term = vim.api.nvim_replace_termcodes('<C-W>', true, false, true)
+                -- Feed it as “typed” so it’s handled in insert mode, triggering Telescope’s own delete‐word logic
+                vim.api.nvim_feedkeys(term, 't', false)
+              end,
+            },
+          },
+        },
         -- pickers = {}
         extensions = {
           ['ui-select'] = {
