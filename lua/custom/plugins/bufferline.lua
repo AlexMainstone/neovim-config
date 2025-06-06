@@ -13,7 +13,11 @@ return {
         offsets = {
           {
             filetype = 'neo-tree',
-            text = 'File Explorer',
+            text_align = 'left',
+            separator = true,
+          },
+          {
+            filetype = 'dapui_scopes',
             text_align = 'left',
             separator = true,
           },

@@ -131,7 +131,7 @@ return {
       command = 'C:\\Users\\Alex.Mainstone\\AppData\\Local\\nvim-data\\mason\\packages\\cpptools\\extension\\debugAdapters\\vsdbg\\bin\\vsdbg.exe',
       args = { '--interpreter=vscode' },
       options = {
-        externalTerminal = true,
+        externalTerminal = false,
         -- logging = {
         --   moduleLoad = false,
         --   trace = true
