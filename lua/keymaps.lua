@@ -47,8 +47,40 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   desc = 'Highlight when yanking (copying) text',
   group = vim.api.nvim_create_augroup('kickstart-highlight-yank', { clear = true }),
   callback = function()
-    vim.hl.on_yank()
+    vim.highlight.on_yank()
   end,
 })
+
+-- function Ninja()
+--   cmd = 'ninja'
+--   vim.fn.jobstart(cmd, {
+--     cwd = 'build/',
+--   })
+-- end
+--
+-- function Cmake()
+--   cmd = 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl ..'
+--   vim.fn.jobstart(cmd, {
+--     cwd = 'build/',
+--   })
+-- end
+--
+-- vim.keymap.set('n', '<leader>dd', function()
+--   local file = vim.fn.expand '%:p'
+--   local filetype = vim.bo.filetype
+--   -- Step 1: Check if it's a C++ file
+--   if filetype ~= 'cpp' then
+--     print 'Not a C++ file.'
+--     return
+--   end
+--
+--   -- Step 2: Check if build directory exists
+--   local build_dir = 'build'
+--   if vim.fn.isdirectory(build_dir) == 0 then
+--     print 'Build directory does not exist. Creating build & Running Cmake.'
+--     vim.fn.mkdir('build', 'p')
+--     Cmake()
+--   end
+-- end, { desc = 'Run in [D]ebug' })
 
 -- vim: ts=2 sts=2 sw=2 et

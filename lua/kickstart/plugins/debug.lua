@@ -5,6 +5,37 @@
 -- Primarily focused on configuring the debugger for Go, but can
 -- be extended to other languages as well. That's why it's called
 -- kickstart.nvim and not kitchen-sink.nvim ;)
+--
+
+local function msg_with_content_length(msg)
+  return string.format('Content-Length: %d\r\n\r\n%s', #msg, msg)
+end
+local function send_payload(client, payload)
+  local msg = msg_with_content_length(vim.json.encode(payload))
+  client.write(msg)
+end
+
+function RunHandshake(self, request_payload)
+  local signResult = io.popen('node C:\\Users\\Alex.Mainstone\\AppData\\Local\\nvim\\node\\vsdbg.js ' .. request_payload.arguments.value)
+  print(signResult)
+  if signResult == nil then
+    print('error while signing handshake', vim.log.levels.ERROR)
+    return
+  end
+  local signature = signResult:read '*a'
+  signature = string.gsub(signature, '\n', '')
+  local response = {
+    type = 'response',
+    seq = 0,
+    command = 'handshake',
+    request_seq = request_payload.seq,
+    success = true,
+    body = {
+      signature = signature,
+    },
+  }
+  send_payload(self.client, response)
+end
 
 return {
   -- NOTE: Yes, you can install new plugins here!
@@ -94,7 +125,78 @@ return {
       -- online, please don't ask me how to install them :)
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
-        'delve',
+        'cppdbg',
+      },
+    }
+    dap.adapters.cppvsdbg = {
+      id = 'cppvsdbg',
+      type = 'executable',
+      command = 'C:\\Users\\Alex.Mainstone\\AppData\\Local\\nvim-data\\mason\\packages\\cpptools\\extension\\debugAdapters\\vsdbg\\bin\\vsdbg.exe',
+      args = { '--interpreter=vscode' },
+      options = {
+        externalTerminal = true,
+        -- logging = {
+        --   moduleLoad = false,
+        --   trace = true
+        -- }
+      },
+      runInTerminal = true,
+      reverse_request_handlers = {
+        handshake = RunHandshake,
+      },
+    }
+
+    local pick_exe_file = function()
+      local scan = require 'plenary.scandir'
+      local pickers = require 'telescope.pickers'
+      local finders = require 'telescope.finders'
+      local sorters = require 'telescope.sorters'
+      local actions = require 'telescope.actions'
+      local action_state = require 'telescope.actions.state'
+
+      local cwd = vim.fn.getcwd() .. '\\build\\'
+      local files = scan.scan_dir(cwd, { depth = 2, search_pattern = '%.exe$' })
+
+      if #files == 1 then
+        return files[1]
+      end
+      return coroutine.create(function(coro)
+        pickers
+          .new({}, {
+            prompt_title = 'Select .exe to launch' .. files[1],
+            finder = finders.new_table {
+              results = files,
+            },
+            sorter = sorters.get_generic_fuzzy_sorter(),
+            attach_mappings = function(prompt_bufnr, map)
+              actions.select_default:replace(function()
+                actions.close(prompt_bufnr)
+                local selection = action_state.get_selected_entry()
+                coroutine.resume(coro, selection[1])
+              end)
+              return true
+            end,
+          })
+          :find()
+      end)
+    end
+
+    dap.configurations.cpp = {
+      {
+        name = 'Try vsdbg',
+        type = 'cppvsdbg',
+        request = 'launch',
+        program = pick_exe_file,
+        cwd = vim.fn.getcwd(),
+        clientID = 'vscode',
+        clientName = 'Visual Studio Code',
+        externalTerminal = true,
+        columnsStartAt1 = true,
+        linesStartAt1 = true,
+        locale = 'en',
+        pathFormat = 'path',
+        externalConsole = true,
+        -- console = "externalTerminal"
       },
     }
 
@@ -107,15 +209,15 @@ return {
       icons = { expanded = '▾', collapsed = '▸', current_frame = '*' },
       controls = {
         icons = {
-          pause = '⏸',
-          play = '▶',
-          step_into = '⏎',
-          step_over = '⏭',
-          step_out = '⏮',
-          step_back = 'b',
-          run_last = '▶▶',
-          terminate = '⏹',
-          disconnect = '⏏',
+          pause = '',
+          play = '',
+          step_into = '󰆹',
+          step_over = '󰆷',
+          step_out = '󰆸',
+          step_back = '',
+          run_last = '󰘁',
+          terminate = '',
+          disconnect = '',
         },
       },
     }
