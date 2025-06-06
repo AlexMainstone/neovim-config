@@ -19,6 +19,7 @@ return {
     opts = {
       -- delay between pressing a key and opening which-key (milliseconds)
       -- this setting is independent of vim.o.timeoutlen
+      preset = 'helix',
       delay = 0,
       preset = 'helix',
       icons = {

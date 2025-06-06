@@ -21,6 +21,8 @@ return {
         footer = '',
       }
 
+      require('mini.starter').setup { header = 'Nvim.', footer = '' }
+
       -- Simple and easy statusline.
       --  You could remove this setup call if you don't like it,
       --  and try some other statusline plugin
