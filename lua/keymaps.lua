@@ -51,36 +51,9 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- function Ninja()
---   cmd = 'ninja'
---   vim.fn.jobstart(cmd, {
---     cwd = 'build/',
---   })
--- end
---
--- function Cmake()
---   cmd = 'cmake -G "Ninja" -DCMAKE_BUILD_TYPE=Debug -DCMAKE_C_COMPILER=cl -DCMAKE_CXX_COMPILER=cl ..'
---   vim.fn.jobstart(cmd, {
---     cwd = 'build/',
---   })
--- end
---
--- vim.keymap.set('n', '<leader>dd', function()
---   local file = vim.fn.expand '%:p'
---   local filetype = vim.bo.filetype
---   -- Step 1: Check if it's a C++ file
---   if filetype ~= 'cpp' then
---     print 'Not a C++ file.'
---     return
---   end
---
---   -- Step 2: Check if build directory exists
---   local build_dir = 'build'
---   if vim.fn.isdirectory(build_dir) == 0 then
---     print 'Build directory does not exist. Creating build & Running Cmake.'
---     vim.fn.mkdir('build', 'p')
---     Cmake()
---   end
--- end, { desc = 'Run in [D]ebug' })
+-- Go to the next buffer with Shift+L
+vim.keymap.set('n', 'L', ':bnext<CR>', { noremap = true, silent = true })
 
+-- Go to the previous buffer with Shift+H
+vim.keymap.set('n', 'H', ':bprevious<CR>', { noremap = true, silent = true })
 -- vim: ts=2 sts=2 sw=2 et

@@ -123,7 +123,6 @@ return {
       ensure_installed = {
         -- Update this to ensure that you have the debuggers for the langs you want
         'cppdbg',
-<<<<<<< HEAD
       },
     }
     dap.adapters.cppvsdbg = {
@@ -195,8 +194,6 @@ return {
         pathFormat = 'path',
         externalConsole = true,
         -- console = "externalTerminal"
-=======
->>>>>>> 562a89e1ca1fb70a1358dc68b55c7aebb3bae04d
       },
     }
 

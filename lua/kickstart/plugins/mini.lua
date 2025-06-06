@@ -38,6 +38,15 @@ return {
         return '%2l:%-2v'
       end
 
+      -- In your init.lua (or wherever you put your autocommands):
+      vim.api.nvim_create_autocmd('FileType', {
+        pattern = { 'neo-tree', 'toggleterm' },
+        callback = function(args)
+          -- args.buf is the buffer number that just got that filetype
+          -- Setting this to true in the buffer will turn off mini.statusline there.
+          vim.b[args.buf].ministatusline_disable = true
+        end,
+      })
       -- ... and there is more!
       --  Check out: https://github.com/echasnovski/mini.nvim
     end,

@@ -212,11 +212,8 @@ return {
         root_dir = require('lspconfig').util.root_pattern('compile_commands.json', 'compile_flags.txt', '.git'),
       }
       local servers = {
-<<<<<<< HEAD
         -- gopls = {},
-=======
         -- clangd = {},
->>>>>>> 562a89e1ca1fb70a1358dc68b55c7aebb3bae04d
         -- pyright = {},
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs

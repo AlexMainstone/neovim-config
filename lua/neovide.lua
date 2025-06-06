@@ -18,3 +18,4 @@ vim.keymap.set('i', '<C-v>', '<ESC>pli') -- Paste insert mode
 vim.keymap.set('i', '<C-BS>', function()
   return vim.api.nvim_replace_termcodes('<C-w>', true, false, true)
 end, { expr = true })
+vim.keymap.set('t', '<C-BS>', '<C-W>', { noremap = true })
